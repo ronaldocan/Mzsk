@@ -110,7 +110,6 @@ public class TestUser {
 
 * 学习曲线陡峭，其引入的DRL语言较复杂，独立的系统很难进行二次开发。
 * 因为Rete算法是空间换时间，所以当规则很多的时候，可能会很耗系统资源。
-*  无法有效支持定时触达（如用户在浏览发生后30分钟触达支付条件判断）。
 
 ## Aviator
 
@@ -360,6 +359,13 @@ String express = "a+b*c";
 Object result = runner.execute(express, context, null, true, false);
 System.out.println(result);
 ```
+**优点**
+
+* 容量小，性能强
+
+**缺点**
+
+* 开源文档对比前二者少，有一定的学习成本
 
 # 选型结果对比
 

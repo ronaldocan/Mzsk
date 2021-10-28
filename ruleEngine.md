@@ -338,9 +338,9 @@ QLExpress从一开始就是从复杂的阿里电商业务系统出发，并且�
 
 ```
 <dependency>
-	<groupId>com.alibaba</groupId>
-	<artifactId>QLExpress</artifactId>
-	<version>3.2.0</version>
+    <groupId>com.alibaba</groupId>
+    <artifactId>QLExpress</artifactId>
+    <version>3.2.0</version>
 </dependency>
 ```
 

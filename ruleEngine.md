@@ -351,14 +351,14 @@ QLExpress从一开始就是从复杂的阿里电商业务系统出发，并且�
 //1.语法分析和计算
 ExpressRunner runner = new ExpressRunner();
 //2.存储上下文信息
-DefaultContext context = new DefaultContext<>();
-context.put("chinese",98);
-context.put("math",100);
-context.put("english",78);
-
-//3.执行一段语句chinese+math+english，并且传入上下文
-Object executeResult = runner.execute("chinese+math+english", context, null, true, false);
-System.out.println(executeResult);
+DefaultContext<String, Object> context = new DefaultContext<String, Object>();
+context.put("a",1);
+context.put("b",2);
+context.put("c",3);
+String express = "a+b*c";
+//3.计算结果
+Object result = runner.execute(express, context, null, true, false);
+System.out.println(result);
 ```
 
 # 选型结果对比

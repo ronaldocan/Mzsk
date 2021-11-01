@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="rule-web" />
+        <module name="drools" />
+        <module name="aviator" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="aviator" target="11" />
+      <module name="aviator-example" target="1.5" />
+      <module name="drools" target="11" />
+      <module name="drools-example" target="1.5" />
+      <module name="rule-engine" target="1.5" />
+      <module name="rule-web" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aviator" options="-parameters" />
+      <module name="drools" options="-parameters" />
+      <module name="rule-web" options="-parameters" />
+    </option>
+  </component>
+</project>

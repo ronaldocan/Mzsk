@@ -383,3 +383,4 @@ System.out.println(result);
 * [EasyRules](https://github.com/j-easy/easy-rules)
 * [QLExpress](https://github.com/alibaba/QLExpress)
 * [Flink整合Aviator](https://mp.weixin.qq.com/s/mh--wQvAWQq2tDPKq0-m8Q)
+* [Flink CEP 实战](https://developer.aliyun.com/article/738454)

@@ -381,4 +381,4 @@ System.out.println(result);
 * [Aviator](https://github.com/killme2008/aviatorscript)
 * [EasyRules](https://github.com/j-easy/easy-rules)
 * [QLExpress](https://github.com/alibaba/QLExpress)
-
+* [Flink整合Aviator](https://mp.weixin.qq.com/s/mh--wQvAWQq2tDPKq0-m8Q)

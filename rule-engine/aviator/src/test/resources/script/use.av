@@ -1,6 +1,8 @@
 ## examples/use.av
 
 use java.util.*;
+use java.util.concurrent.locks.{ReentrantLock, ReentrantReadWriteLock};
+use java.util.concurrent.CountDownLatch;
 
 let list = new ArrayList(10);
 
@@ -16,9 +18,6 @@ seq.add(set, "a");
 
 p("set type is: " + type(set));
 p("set is: #{set}");
-
-use java.util.concurrent.locks.{ReentrantLock, ReentrantReadWriteLock};
-use java.util.concurrent.CountDownLatch;
 
 let x = 0;
 let n = 10;

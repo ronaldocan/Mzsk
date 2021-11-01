@@ -127,6 +127,7 @@ Aviator是一个高性能、轻量级的 java 语言实现的[表达式求值](h
 6. 可自定义函数，易于扩展。
 7. 可重载操作符。
 8. 支持大数运算(BigInteger)和高精度运算(BigDecimal)
+9. 支持即使编译模式（生成匿名类加载到jvm，用完后待被GC）和缓存模式（LRU算法缓存到内存）
 
 ### 接入
 
@@ -227,7 +228,7 @@ public class AviatorSelfFunctionDemo {
 
 **缺点**
 
-* Aviator的限制，没有if else、do while等语句，没有赋值语句，仅支持逻辑表达式、算术表达式、三元表达式和正则匹配，不支持位运算符。
+* Aviator不支持复合规则执行，若要整合复杂规则，可能使得脚本文件复杂
 
 ## EasyRules
 

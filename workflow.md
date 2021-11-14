@@ -21,7 +21,7 @@ BPMN 元素：
 
 2.
 
-## 参考链接
+## 相关链接
 - [BPMN](https://tkjohn.github.io/flowable-userguide/#bpmnConstructs)
 - [工作流引擎开发想法参考](https://www.cnblogs.com/duck-and-duck/p/14436373.html#4830903)
-- 
+- [Activiti BPMN Visualizer](https://plugins.jetbrains.com/plugin/15222-activiti-bpmn-visualizer)

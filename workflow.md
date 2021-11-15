@@ -24,5 +24,5 @@ BPMN 元素：
 ## 相关链接
 - [BPMN](https://tkjohn.github.io/flowable-userguide/#bpmnConstructs)
 - [idea插件-Activiti BPMN Visualizer](https://plugins.jetbrains.com/plugin/15222-activiti-bpmn-visualizer)
-- [activiti 入门基础] (https://juejin.cn/post/7006639187755532295#heading-15)
+- [activiti 入门基础](https://juejin.cn/post/7006639187755532295#heading-15)
 - [工作流引擎开发想法参考](https://www.cnblogs.com/duck-and-duck/p/14436373.html#4830903)

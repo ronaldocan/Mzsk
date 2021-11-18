@@ -1,9 +1,8 @@
 ## jetlink协议接入方式
-目前提供的协议有：
+目前社区版提供的协议有：
 * mqtt
-* coap
-* http
 * tcp
+![image](https://user-images.githubusercontent.com/18349925/142368305-f30a768b-705a-4ba2-b3a8-3d09b2ed8bb3.png)
 ### mqtt接入
 1. 选择 设备接入-->协议管理--> 点击新建按钮
 ![alt 属性文本](http://doc.jetlinks.cn/assets/img/new-protocol.878fbbf2.png)

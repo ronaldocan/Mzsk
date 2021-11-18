@@ -18,7 +18,7 @@
 ![image](https://user-images.githubusercontent.com/18349925/142365934-cb7a6114-9b41-4c18-b497-b1c4677dbcb4.png)
 
 4.
-   -  新建设备
+   -  新建设备型号
    -  选择消息协议为刚新建的协议
 ![image](https://user-images.githubusercontent.com/18349925/142365521-114d1060-5c78-4f4a-9065-eaeb1befba71.png)
 5. 

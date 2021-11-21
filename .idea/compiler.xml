@@ -7,8 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="rule-web" />
         <module name="drools" />
+        <module name="rule-web" />
+        <module name="influx-demo" />
         <module name="aviator" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
       <module name="aviator-example" target="1.5" />
       <module name="drools" target="11" />
       <module name="drools-example" target="1.5" />
+      <module name="influx-demo" target="11" />
       <module name="rule-engine" target="1.5" />
       <module name="rule-web" target="11" />
     </bytecodeTargetLevel>
@@ -25,6 +27,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="aviator" options="-parameters" />
       <module name="drools" options="-parameters" />
+      <module name="influx-demo" options="-parameters" />
       <module name="rule-web" options="-parameters" />
     </option>
   </component>

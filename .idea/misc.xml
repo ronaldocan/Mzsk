@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/rule-engine/rule-engine/drools/pom.xml" />
         <option value="$PROJECT_DIR$/rule-engine/aviator/pom.xml" />
         <option value="$PROJECT_DIR$/rule-engine/pom.xml" />
+        <option value="$PROJECT_DIR$/influx-demo/pom.xml" />
       </list>
     </option>
   </component>

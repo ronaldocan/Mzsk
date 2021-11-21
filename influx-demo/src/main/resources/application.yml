@@ -1,0 +1,9 @@
+server:
+  port: 8100
+
+spring:
+  influx:
+    url: http://localhost:8086/
+    user: admin
+    password: 12345678
+    database: influx_database

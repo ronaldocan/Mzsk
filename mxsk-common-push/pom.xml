@@ -1,0 +1,210 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.7.RELEASE</version>
+    </parent>
+    <groupId>com.mxsk</groupId>
+    <artifactId>mxsk-common-push</artifactId>
+    <version>${revision}</version>
+    <name>Push Service</name>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
+        <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
+        <!-- Nacos Client 微服务注册和配置中心 支持Dubbo/SpringCloud -->
+        <nacos-client.version>1.4.0</nacos-client.version>
+        <!--  Http的伪RPC调用实现 内部Ribbon实现负载均衡 Hystrix实现服务熔断 -->
+        <spring-cloud-openfeign-starter.version>2.2.6.RELEASE</spring-cloud-openfeign-starter.version>
+        <!-- SpringCloud 微服务框架 Http 调用方式 -->
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <!-- SpringCloud 2.2.3 使用Nacos 1.4.1注册中心 依赖 -->
+        <spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
+        <!-- Mybatis 半自动ORM框架 -->
+        <mybatis-plus-starter.version>3.4.1</mybatis-plus-starter.version>
+        <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
+        <!-- DB Connection Pool Manager -->
+        <druid-starter.version>1.2.5</druid-starter.version>
+        <!-- mysql5.x -->
+        <mysql-driver.version>5.1.49</mysql-driver.version>
+        <lombok.version>1.18.12</lombok.version>
+        <hutool.version>5.5.7</hutool.version>
+        <pulsar.version>2.8.0</pulsar.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <git-commit-id-plugin.version>2.2.6</git-commit-id-plugin.version>
+    </properties>
+
+    <modules>
+        <module>push-api</module>
+        <module>push-server</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${spring-cloud-openfeign-starter.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <!-- DB -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-starter.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+                <scope>test</scope>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-driver.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-starter.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>4.5.16</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>28.2-jre</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-jdk8</artifactId>
+                <version>${mapstruct.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.pulsar</groupId>
+                <artifactId>pulsar-client</artifactId>
+                <version>${pulsar.version}</version>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <nacos.namespace>dev</nacos.namespace>
+                <nacos.group>public</nacos.group>
+                <nacos.server-addr>192.168.5.201:8848</nacos.server-addr>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>fat</id>
+            <properties>
+                <nacos.namespace>fat</nacos.namespace>
+                <nacos.group>mxsk</nacos.group>
+                <nacos.server-addr>192.168.5.201:8848</nacos.server-addr>
+            </properties>
+        </profile>
+        <profile>
+            <id>uat</id>
+            <properties>
+                <nacos.namespace>uat</nacos.namespace>
+                <nacos.group>mxsk</nacos.group>
+                <nacos.server-addr>192.168.5.201:8848</nacos.server-addr>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <nacos.namespace>prod</nacos.namespace>
+                <nacos.group>mxsk</nacos.group>
+                <nacos.server-addr>192.168.5.201:8848</nacos.server-addr>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>${git-commit-id-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -10,7 +10,9 @@
         <module name="drools" />
         <module name="rule-web" />
         <module name="influx-demo" />
+        <module name="push-api" />
         <module name="aviator" />
+        <module name="push-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +21,9 @@
       <module name="drools" target="11" />
       <module name="drools-example" target="1.5" />
       <module name="influx-demo" target="11" />
+      <module name="mxsk-common-push" target="11" />
+      <module name="push-api" target="11" />
+      <module name="push-server" target="11" />
       <module name="rule-engine" target="1.5" />
       <module name="rule-web" target="11" />
     </bytecodeTargetLevel>
@@ -28,6 +33,8 @@
       <module name="aviator" options="-parameters" />
       <module name="drools" options="-parameters" />
       <module name="influx-demo" options="-parameters" />
+      <module name="push-api" options="-parameters" />
+      <module name="push-server" options="-parameters" />
       <module name="rule-web" options="-parameters" />
     </option>
   </component>

@@ -6,6 +6,9 @@
       <module fileurl="file://$PROJECT_DIR$/rule-engine/aviator/aviator.iml" filepath="$PROJECT_DIR$/rule-engine/aviator/aviator.iml" />
       <module fileurl="file://$PROJECT_DIR$/rule-engine/drools/drools.iml" filepath="$PROJECT_DIR$/rule-engine/drools/drools.iml" />
       <module fileurl="file://$PROJECT_DIR$/influx-demo/influx-demo.iml" filepath="$PROJECT_DIR$/influx-demo/influx-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mxsk-common-push/mxsk-common-push.iml" filepath="$PROJECT_DIR$/mxsk-common-push/mxsk-common-push.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mxsk-common-push/push-api/push-api.iml" filepath="$PROJECT_DIR$/mxsk-common-push/push-api/push-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mxsk-common-push/push-server/push-server.iml" filepath="$PROJECT_DIR$/mxsk-common-push/push-server/push-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/rule-engine/rule-engine.iml" filepath="$PROJECT_DIR$/rule-engine/rule-engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/rule-engine/rule-web/rule-web.iml" filepath="$PROJECT_DIR$/rule-engine/rule-web/rule-web.iml" />
     </modules>

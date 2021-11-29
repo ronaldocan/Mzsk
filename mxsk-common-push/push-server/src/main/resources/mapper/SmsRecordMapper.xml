@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mxsk.push.mapper.SmsRecordMapper">
+
+    <resultMap type="com.mxsk.push.model.SmsRecord" id="SmsRecordMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="accountId" column="account_id" jdbcType="INTEGER"/>
+        <result property="templateCode" column="template_code" jdbcType="VARCHAR"/>
+        <result property="signName" column="sign_name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="bizId" column="biz_id" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insertBatch">
+        insert into sms_record (account_id,template_code,sign_name,phone,status,biz_id,create_time,update_time)
+        values
+        <foreach collection="list" item="item"  separator=",">
+            (
+            #{item.accountId},#{item.templateCode},#{item.signName},#{item.phone},#{item.status},#{item.bizId},
+            #{item.createTime},#{item.updateTime}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateSmsSendStatusBatch">
+        <foreach collection="smsRecordList" item="item" separator=";" open="" close="" index="index">
+            update
+                sms_record
+            set
+                content=#{item.content},status=#{item.status}
+            where
+                phone=#{item.phone} and biz_id=#{item.bizId}
+        </foreach>
+    </update>
+
+</mapper>

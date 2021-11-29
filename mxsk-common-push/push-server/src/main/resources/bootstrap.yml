@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: mxsk-commom-push
+  profiles:
+    active: dev
+  group: common
+  cloud:
+    nacos:
+      server-addr: 192.168.5.201:8848
+      config:
+        file-extension: properties
+        namespace: ${spring.profiles.active}
+        group: ${spring.group}

@@ -11,3 +11,8 @@ COAP协议的设计目标就是在低功耗低速率的设备上实现物联网�
 COAP协议就像一个针对物联网场景的http移植品，很多设计保留了HTTP协议的影子，拥有web背景的开发者也能快速上手。但是由于很多物联网设备隐藏在局域网内部，coap设备作为服务器无法被外部设备寻址，在ipv6没有普及之前，coap只能适用于局域网内部（如wifi）通信，这也很大限制了它的发展。
 
 ![image](https://user-images.githubusercontent.com/18349925/142965313-108e045b-0b3c-4854-ab7d-9945d20b685b.png)
+
+# GraphQL
+GraphQL 是一种可以用任何语言实现的规范。我们的代码页包含许多不同编程语言的一长串库来帮助解决这个问题
+GraphQL 可以与IOT进行结合
+https://medium.com/thundra/better-iot-with-graphql-and-appsync-c3617d5c02d0

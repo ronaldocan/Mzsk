@@ -17,6 +17,11 @@ public interface SmsAccountConverter {
 
     SmsAccountConverter INSTANCE = Mappers.getMapper(SmsAccountConverter.class);
 
+    /**
+     * DB实体转换为访问信息dto
+     * @param smsAccount 短信平台帐号记录
+     * @return
+     */
     @Mappings({
             @Mapping(source = "id", target = "accountId"),
             @Mapping(source = "tenantId", target = "tenantId"),

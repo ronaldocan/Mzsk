@@ -15,7 +15,6 @@ import java.util.concurrent.ThreadFactory;
 
 /**
  * Sms驱动配置类
- *
  * @author: zhengguican
  * create in 2021/5/12 14:10
  */

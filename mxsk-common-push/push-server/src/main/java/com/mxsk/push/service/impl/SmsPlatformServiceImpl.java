@@ -13,9 +13,11 @@ import com.mxsk.push.command.api.aliyun.*;
 import com.mxsk.push.config.mq.PulsarTopics;
 import com.mxsk.push.constant.SmsConstant;
 import com.mxsk.push.constant.SmsPlatformConstant;
-import com.mxsk.push.converter.SmsSignConverter;
 import com.mxsk.push.dto.*;
-import com.mxsk.push.enums.*;
+import com.mxsk.push.enums.AuditStatusEnum;
+import com.mxsk.push.enums.ResultCodeEnum;
+import com.mxsk.push.enums.SmsRecordSendStatusEnum;
+import com.mxsk.push.enums.aliyun.AliyunCodeEnum;
 import com.mxsk.push.mapper.SmsRecordMapper;
 import com.mxsk.push.mapper.SmsSignMapper;
 import com.mxsk.push.mapper.SmsTemplateMapper;
@@ -43,6 +45,7 @@ import java.util.stream.Collectors;
 
 
 /**
+ * 短信平台service
  * @author: zhengguican
  * create in 2021/5/20 15:38
  */
@@ -70,7 +73,6 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
 
     @Autowired
     private PulsarTemplate<String> pulsarTemplate;
-
 
     @Override
     public Result<Void> saveSms(SendSmsRequestDTO sendSmsRequestDTO) {
@@ -135,7 +137,6 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
             return result;
         }
         AccessInfoMeta accessInfoMeta = checkAccessInfoValid(addSmsTemplateRequestDTO.getTenantId());
-
         // 填充请求命令
         AbstractSmsCommand smsCommand = getAddSmsTemplateCommand(accessInfoMeta, addSmsTemplateRequestDTO);
         Result<AddSmsTemplateResponseDTO> smsResponseDTO = smsEngine.process(accessInfoMeta, smsCommand);
@@ -144,11 +145,10 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
         }
         // 模板编号
         String templateCode = smsResponseDTO.getData().getTemplateCode();
-
         SmsTemplate smsTemplate = SmsTemplate.builder().code(templateCode).accountId(accessInfoMeta.getAccountId()).
                 name(addSmsTemplateRequestDTO.getTemplateName()).content(addSmsTemplateRequestDTO.getTemplateContent()).
                 type(addSmsTemplateRequestDTO.getTemplateType()).createTime(nowTime).updateTime(nowTime).
-                status(TemplateAuditStatusEnum.WAIT_AUDIT.getCode()).build();
+                status(AuditStatusEnum.WAIT_AUDIT.getCode()).build();
         this.smsTemplateMapper.insert(smsTemplate);
 
         // 添加查询模板审核状态任务
@@ -164,31 +164,17 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
             return result;
         }
         AccessInfoMeta accessInfoMeta = checkAccessInfoValid(addSmsSignRequestDTO.getTenantId());
-
         // 填充请求命令
         AbstractSmsCommand smsCommand = getAddSmsSignCommand(accessInfoMeta, addSmsSignRequestDTO);
         Result<SmsResponseDTO> smsResponseDTO = smsEngine.process(accessInfoMeta, smsCommand);
         if (!ResultCodeEnum.SUCCESS.getCode().equals(smsResponseDTO.getCode())) {
             return Result.error(ResultCodeEnum.FAIL.getCode(), smsResponseDTO.getMessage());
         }
-
-        SmsSign smsSign = SmsSign.builder().signName(addSmsSignRequestDTO.getSignName()).status(SignAuditStatusEnum.WAIT_AUDIT.getCode())
+        SmsSign smsSign = SmsSign.builder().signName(addSmsSignRequestDTO.getSignName()).status(AuditStatusEnum.WAIT_AUDIT.getCode())
                 .accountId(accessInfoMeta.getAccountId()).signSource(addSmsSignRequestDTO.getSignSource())
                 .remark(addSmsSignRequestDTO.getRemark()).updateTime(nowTime).createTime(nowTime).build();
         this.smsSignMapper.insert(smsSign);
         return Result.success();
-    }
-
-    @Override
-    public Result<List<SmsSignQueryResponseDTO>> querySmsSign(SmsSignQueryRequestDTO smsSignQueryRequestDTO) {
-        AccessInfoMeta accessInfoMeta = checkAccessInfoValid(smsSignQueryRequestDTO.getTenantId());
-        QueryWrapper<SmsSign> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SmsSign::getAccountId, accessInfoMeta.getAccountId());
-        List<SmsSign> smsSignList = this.smsSignMapper.selectList(queryWrapper);
-        List<SmsSignQueryResponseDTO> smsSignQueryRequestDTOList = smsSignList.stream().map(item -> {
-            return SmsSignConverter.INSTANCE.domain2QuerySignDTO(item);
-        }).collect(Collectors.toList());
-        return Result.success(smsSignQueryRequestDTOList);
     }
 
     @Override
@@ -227,7 +213,7 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
             try {
                 encodeData = Base64.encode(item.getBytes());
             } catch (IOException e) {
-                log.error("SMS服务读取文件异常,租户ID：{},msg：{}",tenantId,e.getMessage());
+                log.error("SMS服务读取文件异常,租户ID：{},msg：{}", tenantId, e.getMessage());
                 throw new RuntimeException(e);
             }
             return SignFileDTO.builder().fileContents(encodeData).fileSuffix(contentType).build();
@@ -254,7 +240,6 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
                 updateRecordList.add(recordResult.getData());
             }
         });
-
         if (!CollectionUtils.isEmpty(updateRecordList)) {
             if (updateRecordList.size() > SmsConstant.DB_UPDATE_SMS_BATCH_SIZE) {
                 List<List<SmsRecord>> subList = Lists.partition(updateRecordList, SmsConstant.DB_UPDATE_SMS_BATCH_SIZE);
@@ -270,7 +255,7 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
             try {
                 pulsarTemplate.send(PulsarTopics.QUERY_SMS_SEND_STATUS, JSONUtil.toJsonStr(waitSyncList));
             } catch (PulsarClientException e) {
-                log.error("添加更新短信发送状态任务失败,data:{},msg:{}",waitSyncList, e);
+                log.error("添加更新短信发送状态任务失败,data:{},msg:{}", waitSyncList, e);
                 throw new RuntimeException(e);
             }
         }
@@ -295,7 +280,7 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
                             aliyunQueryTemplateResponseDTO.getCode(), aliyunQueryTemplateResponseDTO.getMessage());
                     log.error(errorMsg);
                     addQueryTemplateTaskInternal(accessInfoMeta, templateCode);
-                } else if (TemplateAuditStatusEnum.WAIT_AUDIT.getCode().equals(aliyunQueryTemplateResponseDTO.getTemplateStatus())) {
+                } else if (AuditStatusEnum.WAIT_AUDIT.getCode().equals(aliyunQueryTemplateResponseDTO.getTemplateStatus())) {
                     addQueryTemplateTaskInternal(accessInfoMeta, templateCode);
                 } else {
 
@@ -329,12 +314,11 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
                     String errorMsg = String.format("短信平台请求签名查询命令失败,错误码：%s，描述：%s",
                             querySignResponseDTO.getCode(), querySignResponseDTO.getMessage());
                     log.error(errorMsg);
-                } else if (SignAuditStatusEnum.WAIT_AUDIT.getCode().equals(querySignResponseDTO.getSignStatus())) {
+                } else if (AuditStatusEnum.WAIT_AUDIT.getCode().equals(querySignResponseDTO.getSignStatus())) {
                     String infoMsg = String.format("短信平台请求查询签名命令成功(未审核),描述：%s",
                             querySignResponseDTO);
                     log.info(infoMsg);
                 } else {
-
                     // 已处理好审核
                     String auditStatus = querySignResponseDTO.getSignStatus();
                     QueryWrapper queryWrapper = new QueryWrapper();
@@ -532,9 +516,7 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
 
         List<String> phoneNumberList = sendBatchSmsRequestDTO.getPhoneList();
         List<String> signNameList = sendBatchSmsRequestDTO.getSignNameList();
-
         for (int i = 0; i < sendBatchSmsRequestDTO.getPhoneList().size(); i++) {
-
             String phone = phoneNumberList.get(i);
             String signName = signNameList.get(i);
             SmsRecord smsRecord = SmsRecord.builder().templateCode(sendBatchSmsRequestDTO.getTemplateCode())
@@ -543,13 +525,12 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
                     .bizId(bizId).build();
             list.add(smsRecord);
         }
-
         return list;
-
     }
 
     /**
      * 填充查询短信详情命令
+     *
      * @param accessInfoMeta           短信平台访问信息
      * @param querySmsDetailRequestDTO 查询短信详情请求DTO
      * @return
@@ -570,6 +551,7 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
 
     /**
      * 检验短信平台账号是否有效
+     *
      * @param tenantId 租户ID
      * @return
      */
@@ -581,6 +563,7 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
 
     /**
      * 生成查询短信详情请求DTO
+     *
      * @param tenantId  租户ID
      * @param smsRecord 短信记录
      * @return
@@ -594,6 +577,7 @@ public class SmsPlatformServiceImpl implements SmsPlatformService {
 
     /**
      * 添加查询短信发送状态任务
+     *
      * @param accessInfoMeta 平台配置信息
      * @param smsRecordList  短信记录集合
      */

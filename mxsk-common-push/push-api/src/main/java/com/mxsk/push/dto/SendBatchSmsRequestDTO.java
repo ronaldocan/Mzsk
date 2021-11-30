@@ -7,7 +7,7 @@ import java.util.Map;
 import lombok.Data;
 
 /**
- * 批量短信请求DTO
+ * 批量发送短信请求DTO
  *
  * @author: zhengguican create in 2021/5/20 10:13
  */

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * 添加短信模板请求DTO
+ * 添加短信签名请求DTO
  *
  * @author: zhengguican create in 2021/5/20 13:58
  */

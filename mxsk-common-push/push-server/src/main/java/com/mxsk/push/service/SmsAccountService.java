@@ -1,6 +1,6 @@
 package com.mxsk.push.service;
 
-import com.mxsk.push.dto.CreateSmsAccountRequestDTO;
+import com.mxsk.push.dto.AddSmsAccountRequestDTO;
 import com.mxsk.push.dto.Result;
 
 /**
@@ -14,8 +14,8 @@ public interface SmsAccountService {
     /**
      * 新增短信平台账号记录
      *
-     * @param createSmsAccountRequestDTO 短信账号新增请求DTO
+     * @param addSmsAccountRequestDTO 短信账号新增请求DTO
      * @return
      */
-    Result<Void> save(CreateSmsAccountRequestDTO createSmsAccountRequestDTO);
+    Result<Void> save(AddSmsAccountRequestDTO addSmsAccountRequestDTO);
 }

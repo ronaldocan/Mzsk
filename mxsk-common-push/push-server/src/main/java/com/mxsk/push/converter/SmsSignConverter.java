@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 /**
  * 短信签名实体转换器
+ *
  * @author: zhengguican
  * create in 2021/5/24 16:19
  */
@@ -15,6 +16,12 @@ public interface SmsSignConverter {
 
     SmsSignConverter INSTANCE = Mappers.getMapper(SmsSignConverter.class);
 
+    /**
+     * DB实体转换为DTO
+     *
+     * @param smsSign 短信签名记录
+     * @return
+     */
     @Mappings({
             @Mapping(source = "signName", target = "signName"),
             @Mapping(source = "signSource", target = "signSource"),

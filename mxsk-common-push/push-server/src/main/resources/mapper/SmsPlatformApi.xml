@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mxsk.push.mapper.SmsAccountMapper">
+
+    <resultMap type="com.mxsk.push.model.SmsAccount" id="SmsAccountMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+        <result property="accessKey" column="access_key" jdbcType="VARCHAR"/>
+        <result property="secret" column="secret" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="endPoint" column="end_point" jdbcType="VARCHAR"/>
+        <result property="platform" column="platform" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+</mapper>

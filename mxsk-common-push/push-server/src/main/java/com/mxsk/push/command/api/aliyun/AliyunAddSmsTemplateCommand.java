@@ -8,8 +8,8 @@ import com.mxsk.push.command.AbstractSmsCommand;
 import com.mxsk.push.command.spi.aliyun.AliyunSmsClientAdapter;
 import com.mxsk.push.dto.AddSmsTemplateResponseDTO;
 import com.mxsk.push.dto.Result;
-import com.mxsk.push.enums.AliyunSmsCommandEnum;
 import com.mxsk.push.enums.ResultCodeEnum;
+import com.mxsk.push.enums.aliyun.AliyunSmsCommandEnum;
 import com.mxsk.push.exception.ErrorCode;
 import com.mxsk.push.exception.SmsCommandException;
 import com.mxsk.push.util.SmsUtil;
@@ -49,7 +49,6 @@ public class AliyunAddSmsTemplateCommand extends AbstractSmsCommand {
 
     @Override
     public Result execute() throws SmsCommandException {
-
         if (null == smsClient) {
             return Result.error(ResultCodeEnum.FAIL.getCode(), "获取短信平台账号配置异常");
         }

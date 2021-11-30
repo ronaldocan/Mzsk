@@ -15,7 +15,7 @@ public interface SmsRecordService {
     /**
      * 批量更新短信内容
      *
-     * @param smsRecordList
+     * @param smsRecordList 短信记录集合
      */
     void updateSmsSendStatus(List<SmsRecord> smsRecordList);
 }

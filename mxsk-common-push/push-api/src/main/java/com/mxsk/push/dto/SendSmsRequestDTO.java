@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * 短信请求DTO
+ * 发送短信请求DTO
  *
  * @author: zhengguican create in 2021/5/20 10:13
  */

@@ -1,6 +1,6 @@
 package com.mxsk.push.controller;
 
-import com.mxsk.push.api.SmsApi;
+import com.mxsk.push.api.SmsPlatformApi;
 import com.mxsk.push.dto.*;
 import com.mxsk.push.service.SmsPlatformService;
 import com.mxsk.push.service.SmsSignService;
@@ -13,12 +13,11 @@ import java.util.List;
 
 /**
  * 短信平台请求接口
- *
  * @author: zhengguican
  * create in 2021/5/20 13:46
  */
 @RestController
-public class SmsController implements SmsApi {
+public class SmsPlatformController implements SmsPlatformApi {
 
     @Autowired
     private SmsPlatformService smsPlatformService;

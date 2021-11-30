@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 /**
  * 短信平台账号请求配置获取类
- *
  * @author: zhengguican
  * create in 2021/5/12 14:23
  */

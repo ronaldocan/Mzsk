@@ -35,7 +35,6 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     public Result<List<SmsTemplateQueryResponseDTO>> querySmsTemplate(SmsTemplateQueryRequestDTO smsTemplateQueryRequestDTO) {
         AccessInfoMeta accessInfoMeta = (AccessInfoMeta) metaCache.get(smsTemplateQueryRequestDTO.getTenantId().toString());
         SmsUtil.checkAccessInfoNotEmpty(accessInfoMeta, smsTemplateQueryRequestDTO.getTenantId());
-
         QueryWrapper<SmsTemplate> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SmsTemplate::getAccountId, accessInfoMeta.getAccountId());
         List<SmsTemplate> smsTemplateList = this.smsTemplateMapper.selectList(queryWrapper);

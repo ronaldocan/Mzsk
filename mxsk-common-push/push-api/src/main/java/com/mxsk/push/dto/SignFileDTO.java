@@ -3,7 +3,11 @@ package com.mxsk.push.dto;
 import lombok.Builder;
 import lombok.Data;
 
-/** @author: zhengguican create in 2021/5/20 16:19 */
+/**
+ * 短信签名文件dto
+ *
+ * @author: zhengguican create in 2021/5/20 16:19
+ */
 @Data
 @Builder
 public class SignFileDTO {

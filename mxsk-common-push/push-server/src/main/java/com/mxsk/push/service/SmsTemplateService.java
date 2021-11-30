@@ -18,7 +18,7 @@ public interface SmsTemplateService {
     /**
      * 根据请求DTO查找模板记录
      *
-     * @param smsTemplateQueryRequestDTO
+     * @param smsTemplateQueryRequestDTO 查询短信模版请求DTO
      * @return
      */
     Result<List<SmsTemplateQueryResponseDTO>> querySmsTemplate(SmsTemplateQueryRequestDTO smsTemplateQueryRequestDTO);

@@ -57,7 +57,9 @@
         </dependencies>
     </dependencyManagement>
 ```
+
     - 添加maven编译规则
+    
 ```
 <build>
         <plugins>
@@ -74,7 +76,9 @@
         </plugins>
     </build>
 ```
+
     - 添加hsweb私服和阿里云仓库
+    
 ```
  <repositories>
         <repository>

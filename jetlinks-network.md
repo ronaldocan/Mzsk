@@ -48,3 +48,4 @@
 * [Ngrok](https://ngrok.com/)
 * [Ngrok安装教程](https://zhuanlan.zhihu.com/p/43628167)
 * [Coap介绍](https://iot.mushuwei.cn/#/internal-work/coap-part1)
+* [pem证书生成](https://my.oschina.net/who7708/blog/3178769)

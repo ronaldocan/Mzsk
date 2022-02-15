@@ -44,7 +44,7 @@
 ![image](https://user-images.githubusercontent.com/18349925/154015143-5efeab19-b4bb-4321-bb32-0050446d3652.png)
     - 在设备运行状态中可以看到属性已发生变化。
 ![bd61b6aa13530bc09ba97f4f7f4fb89](https://user-images.githubusercontent.com/18349925/154015196-63b51a77-3a5c-4e49-b0ff-1f30af5b1070.png)
-
+* [模拟工具.zip](https://github.com/ronaldocan/Mzsk/files/8066918/default.zip)
 * [Ngrok](https://ngrok.com/)
 * [Ngrok安装教程](https://zhuanlan.zhihu.com/p/43628167)
 * [Coap介绍](https://iot.mushuwei.cn/#/internal-work/coap-part1)

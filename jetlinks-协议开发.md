@@ -101,7 +101,7 @@
     - 新建packag：org.jetlinks.demo.protocol
     - 创建协议编码解码类：DemoDeviceMessageCodec
 ```
-    import io.netty.buffer.ByteBuf;
+  import io.netty.buffer.ByteBuf;
   import io.netty.buffer.ByteBufUtil;
   import io.netty.buffer.Unpooled;
   import lombok.AllArgsConstructor;

@@ -7,13 +7,13 @@
         <dependency>
             <groupId>org.jetlinks</groupId>
             <artifactId>jetlinks-core</artifactId>
-            <version>1.1.1</version>
+            <version>1.2.0</version>
         </dependency>
         <!-->jetlinks 协议解析接口包<-->
         <dependency>
             <groupId>org.jetlinks</groupId>
             <artifactId>jetlinks-supports</artifactId>
-            <version>1.1.1</version>
+            <version>1.2.0</version>
         </dependency>
         <!-->lombok，需要idea安装lombok插件，否则去掉<-->
         <dependency>

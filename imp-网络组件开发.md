@@ -1,3 +1,8 @@
+## 网络组件模块说明
+1. 类图
+![uml](https://user-images.githubusercontent.com/18349925/184789539-022a2c52-97ed-418e-91d3-c8816cb012fe.png)
+2. 核心方法说明
+![接口说明](https://user-images.githubusercontent.com/18349925/184789553-97d889ac-6e9f-446b-a6f7-c18ade4b4557.png)
 ## 网络组件开发
 1. pom文件配置
     - 添加maven-网络组件核心依赖
@@ -135,22 +140,86 @@ public class DemoSession implements DeviceSession {
 }
 
 ```
-3. 网关实现类编写
+    - 网关实现类编写 DemoServerGateway
 ```
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetlinks.community.gateway.DeviceGateway;
+import org.jetlinks.community.gateway.monitor.DeviceGatewayMonitor;
+import org.jetlinks.community.gateway.monitor.GatewayMonitors;
 import org.jetlinks.community.gateway.monitor.MonitorSupportDeviceGateway;
+import org.jetlinks.community.network.DefaultNetworkType;
 import org.jetlinks.community.network.NetworkType;
+import org.jetlinks.community.network.coap.server.DemoServer;
+import org.jetlinks.community.network.utils.DeviceGatewayHelper;
+import org.jetlinks.core.ProtocolSupport;
+import org.jetlinks.core.ProtocolSupports;
+import org.jetlinks.core.device.DeviceRegistry;
+import org.jetlinks.core.message.DeviceMessage;
 import org.jetlinks.core.message.Message;
+import org.jetlinks.core.message.codec.DefaultTransport;
+import org.jetlinks.core.message.codec.EncodedMessage;
+import org.jetlinks.core.message.codec.FromDeviceMessageContext;
 import org.jetlinks.core.message.codec.Transport;
+import org.jetlinks.core.server.session.DeviceSessionManager;
+import org.jetlinks.supports.server.DecodedClientMessageHandler;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+
+import java.net.InetSocketAddress;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Description demo网络组件对应的网关
  * @Date 2022/8/16 10:08
  * @Author zhengguican
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Slf4j
+@Data
 public class DemoServerGateway  implements DeviceGateway, MonitorSupportDeviceGateway {
+
+    private final String id;
+
+    private final DemoServer demoServer;
+
+    private final DeviceGatewayMonitor gatewayMonitor;
+
+    private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create(false);
+
+    private final FluxSink<Message> sink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+
+    private final AtomicReference<Boolean> started = new AtomicReference<>(false);
+
+    private final DeviceGatewayHelper helper;
+
+    private final String protocol;
+
+    private final ProtocolSupports supports;
+
+    public DemoServerGateway(String id,
+                                   String protocol,
+                                   ProtocolSupports supports,
+                                   DemoServer server,
+                                   DeviceRegistry registry,
+                                   DeviceSessionManager sessionManager,
+                                   DecodedClientMessageHandler clientMessageHandler) {
+        this.id = id;
+        this.protocol = protocol;
+        this.supports = supports;
+        this.demoServer = server;
+        this.gatewayMonitor = GatewayMonitors.getDeviceGatewayMonitor(id);
+        this.helper = new DeviceGatewayHelper(registry, sessionManager, clientMessageHandler);
+    }
+
     @Override
     public String getId() {
         return null;
@@ -158,76 +227,97 @@ public class DemoServerGateway  implements DeviceGateway, MonitorSupportDeviceGa
 
     @Override
     public Transport getTransport() {
-        return null;
+        return DefaultTransport.Demo;
     }
 
     @Override
     public NetworkType getNetworkType() {
-        return null;
+        return DefaultNetworkType.Demo_Server;
     }
 
     @Override
     public Flux<Message> onMessage() {
-        return null;
+        return messageProcessor;
     }
 
     @Override
     public Mono<Void> startup() {
-        return null;
+        return Mono.fromRunnable(this::doStart);
     }
 
     @Override
     public Mono<Void> pause() {
-        return null;
+        return Mono.fromRunnable(() -> started.set(false));
     }
 
     @Override
     public Mono<Void> shutdown() {
-        return null;
+        return Mono.fromRunnable(() -> {
+            started.set(false);
+            demoServer.shutdown();
+        });
     }
 
     @Override
     public long totalConnection() {
         return 0;
     }
-}
-```
-4.平台发送消息到设备（消息编码）
-```
-@AllArgsConstructor
-@Slf4j
-public class DemoTcpMessageCodec implements DeviceMessageCodec {
-    ..........
-    // 把平台消息编码为协议传输消息，多用于平台命令下发到设备
-    @Override
-    public Publisher<? extends EncodedMessage> encode(MessageEncodeContext context) {
-         // 从平台消息上下文中获取消息内容
-        CommonDeviceMessage message = (CommonDeviceMessage) context.getMessage();
-        EncodedMessage encodedMessage = EncodedMessage.simple(Unpooled.wrappedBuffer(message.toString().getBytes()));
-        // 根据消息类型的不同，构造不同的消息
-        if (message instanceof ReadPropertyMessage) {
-            ReadPropertyMessage readPropertyMessage = (ReadPropertyMessage) message;
-            // 获取需要传输的字节
-            byte[] bytes = readPropertyMessage.toString().getBytes();
-            // 构造为平台传输到设备的消息体
-            encodedMessage = EncodedMessage.simple(Unpooled.wrappedBuffer(bytes));
-        }
-        return Mono.just(encodedMessage);
+
+    /**
+     * 处理coap消息
+     */
+    private void doStart() {
+        // 网络组件入站消息处理
+        demoServer.handleMessage() // TODO 网络组件入站消息方法
+            .flatMap(this::handleMessage)
+            .subscribe();
+    }
+
+    /**
+     * 处理消息 ==>> 设备消息
+     *
+     * @param demoMessage 消息
+     * @return void
+     */
+    Mono<Void> handleMessage(DemoMessage demoMessage) {
+        AtomicReference<Duration> timeoutRef = new AtomicReference<>(Duration.ofSeconds(10));
+        return getProtocol()
+            .flatMap(protocol -> protocol.getMessageCodec(getTransport()))
+            .flatMapMany(codec -> codec.decode(FromDeviceMessageContext.of(new UnknownCoapDeviceSession() {
+                @Override
+                public Mono<Boolean> send(EncodedMessage encodedMessage) {
+                    return super
+                        .send(encodedMessage)
+                        .doOnSuccess(r -> gatewayMonitor.sentMessage());
+                }
+                @Override
+                public void setKeepAliveTimeout(Duration timeout) {
+                    timeoutRef.set(timeout);
+                }
+                @Override
+                public Optional<InetSocketAddress> getClientAddress() {
+                    return Optional.of(new InetSocketAddress(0));
+                }
+            }, demoMessage)))
+            .cast(DeviceMessage.class)
+            .doOnNext(msg -> gatewayMonitor.receivedMessage())
+            .flatMap(demoMessage -> {
+                sink.next(demoMessage);
+                return helper.handleDeviceMessage(demoMessage, deviceOperator ->
+                        new DemoSession(),
+                    DeviceGatewayHelper
+                        .applySessionKeepaliveTimeout(demoMessage, timeoutRef::get),
+                    () -> log.warn("无法从coap[{}]消息中获取设备信息:{}", "host", demoMessage));
+            })
+            .then();
+    }
+
+    public Mono<ProtocolSupport> getProtocol() {
+        return supports.getProtocol(protocol);
     }
 }
 ```
-5. 调试(debug)协议
-将协议包工程放到和jetlinks相同到工程目录里,即可使用IDE进行debug.
+## 网络组件配置参数前端页面联调
+1. 通常网络组件拥有公共参数(Host、Port等)，但却有协议独有参数如(Tcp:KeepOnlineTime),此时配置新增网络组件页面，需调整前端页面
+![页面说明](https://user-images.githubusercontent.com/18349925/184790568-f67ace63-3ce0-4c49-9535-3a64fe622553.png)
 
-参照目录:
-```
---jetlinks
-----|--dev
-----|---|-- demo-protocl    # 开发中的协议
-----|--jetlinks-components 
-----|--jetlinks-standalone
-----|-- ....
-```
-注意
-
-在调试过程中修改代码可以进行热加载,但是重启服务后会失效,需要重新发布协议.
